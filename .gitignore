@@ -1,0 +1,103 @@
+# =========================
+# 🔹 Python bytecode
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# =========================
+# 🔹 Virtual environments
+# =========================
+.venv/
+venv/
+env/
+ENV/
+
+# =========================
+# 🔹 Distribution / packaging
+# =========================
+build/
+dist/
+*.egg-info/
+.eggs/
+*.whl
+
+# =========================
+# 🔹 Logs & temp files
+# =========================
+*.log
+*.tmp
+*.swp
+*.swo
+*.bak
+
+# =========================
+# 🔹 IDE files (PyCharm)
+# =========================
+.idea/
+*.iml
+
+# =========================
+# 🔹 OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# 🔹 Environment variables
+# =========================
+.env
+.env.*
+
+# =========================
+# 🔹 Test / coverage
+# =========================
+.pytest_cache/
+.coverage
+htmlcov/
+
+# =========================
+# 🔹 Jupyter / notebooks
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# 🔹 Databricks / Spark
+# =========================
+.metastore/
+spark-warehouse/
+metastore_db/
+
+# =========================
+# 🔹 Local configs
+# =========================
+*.local
+config.yaml
+
+# =========================
+# 🔹 VS Code (if used)
+# =========================
+.vscode/
+
+#Local Data files
+data/
+
+#logs
+airflow_logs/
+*.log
+
+# Delta Lake / Spark
+data/
+_delta_log/
+
+# Build artifacts
+dist/
+build/
+*.whl
+*.tar.gz
+
+# Logs
+*.log
+
+__pycache__/
+*.pyc

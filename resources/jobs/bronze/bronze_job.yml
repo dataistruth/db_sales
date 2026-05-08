@@ -1,0 +1,25 @@
+resources:
+  jobs:
+    bronze_job:
+      name: bronze_ingestion_job
+
+      # ── Step 1: Define named environment at job level ──────────
+      environments:
+        - environment_key: my_env
+          spec:
+            client: "3"
+
+      tasks:
+        - task_key: bronze_task
+          # ── Step 2: Reference it in the task ───────────────────
+          environment_key: my_env
+
+          notebook_task:
+            notebook_path: ${workspace.file_path}/src/bronze/pipelines/ingest_bronze
+            base_parameters:
+              catalog: ${var.catalog}
+              bronze_schema: ${var.bronze_schema}
+              raw_loc: /Volumes/${var.catalog}/${var.bronze_schema}/raw_landing
+              config_path: ${workspace.file_path}/config/bronze_tables.json
+
+      serverless: true

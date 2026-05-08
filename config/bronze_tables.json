@@ -1,0 +1,14 @@
+[
+  {
+    "table_nm": "raw_customers",
+    "is_active": true
+  },
+  {
+    "table_nm": "raw_orders",
+    "is_active": true
+  },
+  {
+    "table_nm": "raw_products",
+    "is_active": true
+  }
+]

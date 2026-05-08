@@ -1,0 +1,51 @@
+# =============================================================================
+# resources/pipelines/schema_n_volume.yml
+# Unity Catalog resources — catalog, schemas, and volumes
+# Deployed via: databricks bundle deploy -t <target>
+# =============================================================================
+
+resources:
+
+
+
+  # ---------------------------------------------------------------------------
+  # Schemas
+  # Each schema is scoped to the catalog via catalog_name.
+  # ---------------------------------------------------------------------------
+  schemas:
+
+    bronze_schema:
+      name: ${var.bronze_schema}
+      catalog_name: ${var.catalog}
+      comment: "Bronze layer — raw ingested data"
+
+    silver_schema:
+      name: ${var.silver_schema}
+      catalog_name: ${var.catalog}
+      comment: "Silver layer — cleansed and conformed data"
+
+    gold_schema:
+      name: ${var.gold_schema}
+      catalog_name: ${var.catalog}
+      comment: "Gold layer — business-level aggregates and facts"
+
+  # ---------------------------------------------------------------------------
+  # Volumes (MANAGED — lifecycle tied to the schema)
+  # raw_landing : drop zone for source files (CSV, Parquet, JSON etc.)
+  # libs        : shared Python wheels uploaded for DLT pipeline use
+  # ---------------------------------------------------------------------------
+  volumes:
+
+    bronze_raw_volume:
+      name: raw_landing
+      catalog_name: ${var.catalog}
+      schema_name: ${var.bronze_schema}
+      volume_type: MANAGED
+      comment: "Raw ingestion landing zone for source files"
+
+    bronze_libs_volume:
+      name: libs
+      catalog_name: ${var.catalog}
+      schema_name: ${var.bronze_schema}
+      volume_type: MANAGED
+      comment: "Shared Python wheels for DLT pipeline dependencies"
