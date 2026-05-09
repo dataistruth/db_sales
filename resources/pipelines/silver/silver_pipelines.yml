@@ -1,0 +1,32 @@
+resources:
+  pipelines:
+    silver_sales_ingestion:
+      name: silver_claim_daily_${var.env}
+      description: " silver_claim_daily DLT pipeline — ${var.env}"
+
+      catalog: ${var.catalog}
+      target:  ${var.silver_schema}       # schema where DLT publishes tables
+
+      serverless: true
+      # ── bundle-injected spark conf ─────────────────────────────────
+      configuration:
+        bundle.catalog:       ${var.catalog}
+        bundle.env:           ${var.env}
+        bundle.developer:     ${var.developer}
+        bundle.schema.bronze: ${var.bronze_schema}
+        bundle.schema.silver: ${var.silver_schema}
+        bundle.schema.gold:   ${var.gold_schema}
+        bundle.sourcePath: ${workspace.file_path}
+        PYTHONPATH: ${workspace.file_path}/src
+
+      # ── libraries ──────────────────────────────────────────────────
+      libraries:
+        - notebook:
+            path: ${workspace.file_path}/src/silver/pipelines/silver_sales
+
+
+      # ── channel ────────────────────────────────────────────────────
+      channel: CURRENT
+
+      # ── continuous vs triggered ────────────────────────────────────
+      continuous: false                       # triggered mode — job controls it

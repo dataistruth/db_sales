@@ -6,6 +6,10 @@ variables:
     description: "Unity Catalog name for this environment"
     default: db_sales
 
+  developer:
+      description: Developer short name for isolation
+      default: ${workspace.current_user.short_name}
+
   env:
     description: Deployment environment
     default: dev

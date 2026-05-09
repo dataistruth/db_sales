@@ -1,0 +1,28 @@
+resources:
+  pipelines:
+    one_time_date_pipeline:
+      name: one_time_date_pipeline_${var.env}
+      description: "Create d_date dimension — ${var.env}"
+
+      catalog: ${var.catalog}
+      target:  ${var.silver_schema}
+
+      serverless: true        # ← indented under pipeline ✅
+
+
+      configuration:          # ← indented under pipeline ✅
+        bundle.catalog:       ${var.catalog}
+        bundle.env:           ${var.env}
+        bundle.developer:     ${var.developer}
+        bundle.schema.bronze: ${var.bronze_schema}
+        bundle.schema.silver: ${var.silver_schema}
+        bundle.schema.gold:   ${var.gold_schema}
+        bundle.sourcePath:    ${workspace.file_path}
+
+      libraries:
+        - notebook:
+            path: ${workspace.file_path}/src/silver/pipelines/onetime_date_dim_create
+
+
+      channel: CURRENT        # ← indented under pipeline ✅
+      continuous: false       # ← indented under pipeline ✅
