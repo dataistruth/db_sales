@@ -1,7 +1,7 @@
 resources:
   pipelines:
     silver_sales_ingestion:
-      name: silver_claim_daily_${var.env}
+      name: silver_sales_${var.env}
       description: " silver_claim_daily DLT pipeline — ${var.env}"
 
       catalog: ${var.catalog}
