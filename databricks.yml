@@ -34,17 +34,22 @@ variables:
     description: "Full UC volume path for library and wheels"
     default: /Volumes/db_sales/bronze/libs
 
+  alert_email:
+    description: "Email for job failure alerts"
+    default: msingh@computomic.com
+
 workspace:
   root_path: /Workspace/Users/msingh@computomic.com/.bundle/${bundle.name}/${bundle.target}
 
 include:
-  - resources/jobs/*.yml
-  - resources/jobs/*/*.yml
-  - resources/pipelines/*/*.yml
-  - resources/jobs/silver/*.yml
-  - resources/pipelines/*.yml
-  - resources/pipelines/silver/*.yml
-  - resources/schema/*.yml
+  - resources/jobs/*.yml           # ← /jobs/bronze_job.yml etc
+  - resources/jobs/*/*.yml         # ← /jobs/silver/*.yml
+                                   #   /jobs/gold/*.yml
+                                   #   /jobs/bronze/*.yml
+                                   #   /jobs/maintenance/*.yml
+  - resources/pipelines/*.yml      # ← /pipelines/silver_pipeline.yml
+  - resources/pipelines/*/*.yml    # ← /pipelines/silver/*.yml
+  - resources/schema/*.yml         # ← /schema/create_schemas.yml
 
 targets:
 
@@ -64,6 +69,7 @@ targets:
       catalog:            qa_db_sales          # ← fixed, no user suffix
       bronze_volume_path: /Volumes/qa_db_sales/bronze/raw_landing
       libs_volume:        /Volumes/qa_db_sales/bronze/libs
+      alert_email: msingh@computomic.com
 
   prod:
     mode: production
@@ -78,3 +84,4 @@ targets:
       gold_schema:        gold
       bronze_volume_path: /Volumes/${var.catalog}/bronze/raw_landing
       libs_volume:        /Volumes/${var.catalog}/bronze/libs
+      alert_email: msingh@computomic.com

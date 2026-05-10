@@ -1,0 +1,39 @@
+resources:
+  jobs:
+    # ── Nightly maintenance job ────────────────────────────────────────
+    optimize_maintenance_job:
+      name: optimize_maintenance_job
+
+      # ── Schedule — every night at 3 AM UTC ────────────────────────
+      schedule:
+        quartz_cron_expression: "0 0 3 * * ?"  # ← 3:00 AM UTC daily
+        timezone_id: "UTC"
+        pause_status: UNPAUSED                  # ← active immediately
+
+      # ── Email alerts ───────────────────────────────────────────────
+      email_notifications:
+        on_failure:
+          - ${var.alert_email}
+        on_success: []
+
+      # ── Environment ────────────────────────────────────────────────
+      environments:
+        - environment_key: my_env
+          spec:
+            client: "3"
+
+      tasks:
+        - task_key: optimize_task
+          environment_key: my_env
+
+          notebook_task:
+            notebook_path: ${workspace.file_path}/src/common/run_smart_optimize
+            base_parameters:
+              catalog:       ${var.catalog}
+              silver_schema: ${var.silver_schema}
+
+      serverless: true
+
+      # ── Retry on failure ───────────────────────────────────────────
+      max_retries: 2
+      min_retry_interval_millis: 300000          # ← retry after 5 min

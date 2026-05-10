@@ -103,9 +103,11 @@ def f_order_exploded():
 dlt.create_streaming_table(
     name      = "f_order",
     comment   = "One row per order with aggregated order_value",
-    cluster_by       = ["order_id", "order_date_id"],
-    table_properties = {
-        "delta.enableChangeDataFeed": "true"    # ← enable CDF
+    partition_cols=["order_date_id"],  # ← partition not cluster_by
+    table_properties={
+        "delta.enableChangeDataFeed": "true",
+        "delta.autoOptimize.optimizeWrite": "true",
+        "delta.autoOptimize.autoCompact": "true",
     },
     expect_all = {
         "order_id_not_null":    "order_id IS NOT NULL",
@@ -123,7 +125,7 @@ def f_order_staged():
 dlt.apply_changes(
     target             = "f_order",
     source             = "f_order_staged",
-    keys               = ["order_id"],
+    keys               = ["order_id","order_date_id"],
     sequence_by        = col("created_ts"),
     stored_as_scd_type = 1,
     except_column_list=["update_ts"]
@@ -133,9 +135,11 @@ dlt.apply_changes(
 dlt.create_streaming_table(
     name="f_order_line",
     comment = "Stores the record at line level",
-    cluster_by       = ["order_id", "order_date_id"],
-    table_properties = {
-        "delta.enableChangeDataFeed": "true"    # ← enable CDF
+    partition_cols=["order_date_id"],  # ← partition not cluster_by
+    table_properties={
+        "delta.enableChangeDataFeed": "true",
+        "delta.autoOptimize.optimizeWrite": "true",
+        "delta.autoOptimize.autoCompact": "true",
     },
 )
 
@@ -149,8 +153,8 @@ def f_order_line_staged():
 dlt.apply_changes(
     target="f_order_line",
     source="f_order_line_staged",
-    keys=["line_sk"],
-    sequence_by = col("order_date_id"),
+    keys=["line_sk","order_date_id"],
+    sequence_by = col("order_date_id",),
     stored_as_scd_type =2 ,
     except_column_list=["update_ts"]
 )
